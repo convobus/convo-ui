@@ -1,8 +1,10 @@
 import { Amplify } from "aws-amplify"
-import { Authenticator, Button } from "@aws-amplify/ui-react"
+import { Authenticator } from "@aws-amplify/ui-react"
 import "@aws-amplify/ui-react/styles.css"
 import { Layout } from "antd"
 import Dashboard from "./containers/Dashboard"
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import Dashboard2 from "./workspace/Dashboard"
 
 Amplify.configure({
   Auth: {
@@ -12,14 +14,22 @@ Amplify.configure({
   },
 })
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    [<Route path="/" element={<Dashboard />}/>,
+    <Route path="/preview-hidden" element={<Dashboard2 />} />]
+  )
+)
+
 function App() {
   return (
     <Authenticator>
       {({ signOut, user }) => (
         <Layout style={{ height: "100vh" }}>
-          <h1>Hello {user?.username}</h1>
-          <Button onClick={signOut}>Sign out</Button>
-          <Dashboard />
+          {/* <h1>Hello {user?.username}</h1>
+          <Button onClick={signOut}>Sign out</Button> */}
+          {/* <Dashboard /> */}
+          <RouterProvider router={router}/>
         </Layout>
       )}
     </Authenticator>
